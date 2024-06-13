@@ -30,7 +30,8 @@ module.exports ={
                     return;
                 }
     
-                res.status(200).json({
+                res.render("user/profile",{
+                    url: 'http://localhost:3000/',
                     userName: req.session.username,
                     nama: results[0]['username'],
                     email: results[0]['email']

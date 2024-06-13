@@ -48,7 +48,8 @@ module.exports = {
     
             // Pastikan semua field terisi
             if (!judul_berita || !author || !isi_berita || !id_kategori) {
-                res.status(400).send("Judul berita, author, isi berita, dan id kategori harus diisi");
+                res.redirect(400, '/add');
+                // res.status(400).send("Judul berita, author, isi berita, dan id kategori harus diisi");
                 return;
             }
     
@@ -62,8 +63,8 @@ module.exports = {
                         res.status(500).send("Error inserting data");
                         return;
                     }
-    
-                    res.status(201).send({ message: "Berita created", data: { id_berita: results.insertId, judul_berita, author, isi_berita, id_kategori } });
+                    res.redirect(201, '/dashboard');
+                    //res.status(201).send({ message: "Berita created", data: { id_berita: results.insertId, judul_berita, author, isi_berita, id_kategori } });
                 }
             );
         });
@@ -74,7 +75,9 @@ module.exports = {
         const { judul_berita, author, isi_berita, id_kategori } = req.body;
     
         if (!judul_berita || !author ||!isi_berita || !id_kategori) {
-            res.status(400).send("Judul berita, isi berita, dan id kategori harus diisi");
+            // res.status(400);
+            res.redirect(400, '/');
+            // res.status(400).send("Judul berita, isi berita, dan id kategori harus diisi");
             return;
         }
     
@@ -96,11 +99,12 @@ module.exports = {
                     }
     
                     if (results.affectedRows === 0) {
-                        res.status(404).send("Berita not found");
+                        res.redirect(404, '/');
+                        // res.status(404).send("Berita not found");
                         return;
                     }
-    
-                    res.status(200).send({ message: "Berita updated", data: { id_berita: id, judul_berita, author, isi_berita, id_kategori } });
+                    res.redirect(200, '/dashboard');
+                    //res.status(200).send({ message: "Berita updated", data: { id_berita: id, judul_berita, author, isi_berita, id_kategori } });
                 }
             );
         });
@@ -127,13 +131,16 @@ module.exports = {
                     res.status(404).send("Berita not found");
                     return;
                 }
-    
-                res.status(200).send({ message: "Berita deleted", data: { id_berita: id } });
+                res.redirect(200, '/dashboard');
+                //res.status(200).send({ message: "Berita deleted", data: { id_berita: id } });
             });
         });
     },
 
     readAllBerita(req, res) {
+        res.render("admin/dashboard", {
+            url: 'http://localhost:3000/',
+        });
         pool.getConnection((err, connection) => {
             if (err) {
                 res.status(500).send("Database connection error");
@@ -147,8 +154,8 @@ module.exports = {
                     res.status(500).send("Error retrieving data");
                     return;
                 }
-    
-                res.status(200).json({ data: results });
+                res.status(200);
+                //res.status(200).json({ data: results });
                 
             });
         });
@@ -157,6 +164,9 @@ module.exports = {
     
 
     readIdBerita(req, res) {
+        res.render("admin/edit", {
+            url: 'http://localhost:3000/',
+        });
         const id = req.params.id;
     
         pool.getConnection((err, connection) => {
@@ -174,11 +184,13 @@ module.exports = {
                 }
     
                 if (results.length === 0) {
-                    res.status(404).send("Berita not found");
+                    res.redirect(404, '/')
+                    //res.status(404).send("Berita not found");
                     return;
                 }
-    
-                res.status(200).json({ data: results[0] });
+                res.status(200);
+                // res.redirect(200, '/');
+                // res.status(200).json({ data: results[0] });
             });
         });
     },

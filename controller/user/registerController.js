@@ -1,17 +1,12 @@
-// Definisikan konfigurasi Database
 const config = require('../../library/database');
-// Gunakan library mysql
 let mysql = require('mysql');
-// Buat koneksi
 let pool = mysql.createPool(config);
 
-// Kirim error jika koneksi gagal
 pool.on('error', (err) => {
     console.error(err);
 });
 
 module.exports = {
-    // Fungsi untuk membuat tabel jika belum ada
     checkAndCreateTable() {
         pool.getConnection((err, connection) => {
             if (err) {
@@ -41,47 +36,48 @@ module.exports = {
         });
     },
 
-    // Fungsi untuk menyimpan data
     saveRegister(req, res) {
-        // Tampung inputan user ke dalam variabel username, email dan password
-        let username = req.body.username;
-        let email = req.body.email;
-        let password = req.body.password;
-        
-        // Pastikan semua variabel terisi
-        if (username && email && password) {
-            // Panggil koneksi dan eksekusi query
-            pool.getConnection(function(err, connection) {
-                if (err) {
-                    res.status(500).send({ message: "Database connection error" });
-                    return;
-                }
-                connection.query(
-                    `INSERT INTO tbl_user (username, email, password) VALUES (?, ?, SHA2(?, 512));`,
-                    [username, email, password], 
-                    function (error, results) {
-                        if (error) {
-                            res.status(500).send({ message: "Error inserting user data" });
-                            return;
-                        }
-                        // Jika tidak ada error, kirimkan response JSON
-                        res.status(201).send({
-                            message: 'Registrasi berhasil',
-                            data: {
-                                id_user: results.insertId,
-                                username: username,
-                                email: email
-                            }
-                        });
-                    }
-                );
-                // Koneksi selesai
-                connection.release();
+        if (req.method === 'GET') {
+            res.render("user/register", {
+                url: 'http://localhost:3000/',
             });
-        } else {
-            // Kondisi apabila variabel username, email dan password tidak terisi
-            res.status(400).send({ message: "Username, email, and password must be provided" });
+        } else if (req.method === 'POST') {
+            let username = req.body.username;
+            let email = req.body.email;
+            let password = req.body.password;
+            
+            if (username && email && password) {
+                pool.getConnection(function(err, connection) {
+                    if (err) {
+                        res.status(500).send({ message: "Database connection error" });
+                        return;
+                    }
+                    connection.query(
+                        `INSERT INTO tbl_user (username, email, password) VALUES (?, ?, SHA2(?, 512));`,
+                        [username, email, password], 
+                        function (error, results) {
+                            if (error) {
+                                res.status(500).send({ message: "Error inserting user data" });
+                                return;
+                            }
+                            res.redirect(301, '/login');
+                            // res.status(201).send({
+                            //     message: 'Registrasi berhasil',
+                            //     data: {
+                            //         id_user: results.insertId,
+                            //         username: username,
+                            //         email: email
+                            //     }
+                            // });
+                        }
+                    );
+                    connection.release();
+                });
+            } else {
+                res.redirect(400, '/register');
+                res.end();
+                //res.status(400).send({ message: "Username, email, and password must be provided" });
+            }
         }
     }
-    
 };

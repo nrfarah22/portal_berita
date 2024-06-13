@@ -4,6 +4,6 @@ const profileController = require('../../controller/user/profileController');
 var verifyUser = require('../../library/verify');
 
 
-router.get('/', verifyUser.isLogin, profileController.profile);
+router.get('/profile', verifyUser.isLogin, profileController.profile);
 
 module.exports = router;

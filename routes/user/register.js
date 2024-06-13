@@ -5,12 +5,11 @@ const registerController = require('../../controller/user/registerController');
 // Definisikan middleware verify.js
 const verifyUser = require('../../library/verify');
 
-// Panggil fungsi checkAndCreateTable untuk memastikan tabel dibuat
+
 registerController.checkAndCreateTable();
 
-
-// Rute 'http://localhost:3000/register/save' digunakan untuk menyimpan data yang diinput user saat register
+router.get('/', verifyUser.isLogout, registerController.saveRegister);
 router.post('/user', verifyUser.isLogout, registerController.saveRegister);
 
-// Export agar dapat dibaca oleh express
+
 module.exports = router;
