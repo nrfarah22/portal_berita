@@ -8,24 +8,36 @@ pool.on('error',(err)=> {
 });
 
 module.exports ={
-    profile(req,res){
-        let id = req.session.userid;
-        pool.getConnection(function(err, connection) {
-            if (err) throw err;
-            connection.query(
-                `
-                SELECT * FROM tbl_user where id_user = ${id};
-                `
-            , function (error, results) {
-                if(error) throw error;
-                res.render("user/profile",{
-                    url: 'http://localhost:3000/',
+    profile(req, res) {
+        const id = req.session.userid;
+    
+        pool.getConnection((err, connection) => {
+            if (err) {
+                res.status(500).json({ error: "Database connection error" });
+                return;
+            }
+    
+            connection.query('SELECT * FROM tbl_user WHERE id_user = ?', [id], (error, results) => {
+                connection.release();
+    
+                if (error) {
+                    res.status(500).json({ error: "Error retrieving data" });
+                    return;
+                }
+    
+                if (results.length === 0) {
+                    res.status(404).json({ error: "User not found" });
+                    return;
+                }
+    
+                res.status(200).json({
                     userName: req.session.username,
                     nama: results[0]['username'],
                     email: results[0]['email']
                 });
             });
-            connection.release();
-        })
+        });
     }
+    
+    
 }

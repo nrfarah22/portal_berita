@@ -5,23 +5,6 @@
 </head>
 <body>
     <h1>Edit Berita</h1>
-    <form action="/update/<%= data.id_berita %>" method="post">
-        <div>
-            <label for="judul_berita">Judul Berita:</label>
-            <input type="text" id="judul_berita" name="judul_berita" value="<%= data.judul_berita %>">
-        </div>
-        <div>
-            <label for="isi_berita">Isi Berita:</label>
-            <textarea id="isi_berita" name="isi_berita"><%= data.isi_berita %></textarea>
-        </div>
-        <div>
-            <label for="id_kategori">Kategori:</label>
-            <input type="text" id="id_kategori" name="id_kategori" value="<%= data.id_kategori %>">
-        </div>
-        <div>
-            <button type="submit">Update</button>
-        </div>
-    </form>
-    <a href="/">Kembali</a>
+    
 </body>
 </html>

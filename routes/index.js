@@ -6,6 +6,5 @@ const beritaController = require('../controller/admin/beritaController');
 
 router.get('/', homeController.home);
 router.get('/profile', profileController.profile);
-router.get('/dashboard', beritaController.berita);
 
 module.exports = router;

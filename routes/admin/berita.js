@@ -1,17 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const beritaController = require('../../controller/admin/beritaController');
+const kategoriController = require('../../controller/admin/kategoriController');
 
+
+kategoriController.checkAndCreateTable();
 // Pastikan tabel dibuat saat aplikasi dimulai
 beritaController.checkAndCreateTable();
 
 // Rute untuk berita
-router.get('/', beritaController.berita);
-router.get('/add', beritaController.addBerita);
-router.post('/create', beritaController.createBerita);
-// router.get('/edit/:id', beritaController.editBerita);
-router.post('/update/:id', beritaController.updateBerita);
-router.get('/delete/:id', beritaController.deleteBerita);
+
+router.get('/', beritaController.readAllBerita);
+router.get('/:id', beritaController.readIdBerita);
+router.post('/', beritaController.addBerita);
+router.put('/:id', beritaController.editBerita);
+router.delete('/:id', beritaController.deleteBerita);
 
 
 

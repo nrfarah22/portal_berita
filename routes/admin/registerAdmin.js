@@ -7,11 +7,8 @@ const verifyUser = require('../../library/verify');
 
 // Panggil fungsi checkAndCreateTable untuk memastikan tabel dibuat
 registerAdminController.checkAndCreateTable();
-
-// Rute 'http://localhost:3000/register/' digunakan untuk menampilkan form register
-router.get('/', verifyUser.isLogout, registerAdminController.formRegister);
 // Rute 'http://localhost:3000/register/save' digunakan untuk menyimpan data yang diinput user saat register
-router.post('/save', verifyUser.isLogout, registerAdminController.saveRegister);
+router.post('/admin', verifyUser.isLogout, registerAdminController.saveRegister);
 
 // Export agar dapat dibaca oleh express
 module.exports = router;

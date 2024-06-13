@@ -7,37 +7,6 @@
 </head>
 <body>
     <h1>Dashboard Berita</h1>
-    <a href="/admin/add">Tambah Berita</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Judul</th>
-                <th>Isi</th>
-                <th>Kategori</th>
-                <th>Author</th>
-                <th>Tanggal Dibuat</th>
-                <th>Tanggal Diupdate</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% data.forEach(berita => { %>
-                <tr>
-                    <td><%= berita.id_berita %></td>
-                    <td><%= berita.judul_berita %></td>
-                    <td><%= berita.isi_berita %></td>
-                    <td><%= berita.nama_kategori %></td>
-                    <td><%= berita.username %></td>
-                    <td><%= berita.tanggal_dibuat %></td>
-                    <td><%= berita.tanggal_diupdate %></td>
-                    <td>
-                        <a href="/edit/<%= berita.id_berita %>">Edit</a>
-                        <a href="/delete/<%= berita.id_berita %>">Delete</a>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
+    
 </body>
 </html>

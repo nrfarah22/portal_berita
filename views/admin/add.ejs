@@ -16,7 +16,15 @@
         </div>
         <div>
             <label for="id_kategori">Kategori:</label>
-            <input type="text" id="id_kategori" name="id_kategori">
+            <select id="id_kategori" name="id_kategori">
+                <% for(let i = 0; i < kategori.length; i++) { %>
+                    <option value="<%= kategori[i].id_kategori %>"><%= kategori[i].nama_kategori %></option>
+                <% } %>
+            </select>
+        </div>
+        <div>
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" value="<%= admin.username %>" readonly>
         </div>
         <div>
             <button type="submit">Tambah</button>
