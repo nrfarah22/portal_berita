@@ -11,7 +11,7 @@ module.exports = {
     loginAuth(req, res) {
         if (req.method === 'GET') {
             res.render("user/login", {
-                url: 'http://localhost:3000/',
+                url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
             });
         } else if (req.method === 'POST') {
             let email = req.body.email;

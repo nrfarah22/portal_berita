@@ -1,7 +1,7 @@
 module.exports ={
     home(req,res){
         res.render("home",{
-            url: 'http://localhost:3000/',
+            url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
         });
     }
 }

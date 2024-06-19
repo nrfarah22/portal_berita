@@ -1,7 +1,7 @@
 module.exports = {
   multipleStatements  : true,
-  host                : '127.0.0.1',
-  user                : 'root',
-  password            : '',
-  database            : 'portal_berita'
+  host                : 'educalab.id',
+  user                : '6McCwSlAAInN5L53',
+  password            : 'xxY7PtRkDxYoxKry',
+  database            : 'jnN4NZCqZJHralBa'
 };

@@ -43,7 +43,7 @@ module.exports = {
     saveRegister(req, res) {
         if (req.method === 'GET') {
             res.render("admin/registerAdmin", {
-                url: 'http://localhost:3000/',
+                url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
             });
         } else if (req.method === 'POST') {
             // Tampung inputan user ke dalam variabel username, email dan password

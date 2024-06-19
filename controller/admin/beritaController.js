@@ -139,7 +139,7 @@ module.exports = {
 
     readAllBerita(req, res) {
         res.render("admin/dashboard", {
-            url: 'http://localhost:3000/',
+            url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
         });
         pool.getConnection((err, connection) => {
             if (err) {
@@ -165,7 +165,7 @@ module.exports = {
 
     readIdBerita(req, res) {
         res.render("admin/edit", {
-            url: 'http://localhost:3000/',
+            url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
         });
         const id = req.params.id;
     
