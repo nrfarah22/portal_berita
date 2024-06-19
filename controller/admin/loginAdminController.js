@@ -44,7 +44,6 @@ module.exports ={
                                 // });
                             } else {
                                 res.redirect(401, '/loginAdmin');
-                                //res.status(401).send({ message: "Akun tidak ditemukan" });
                             }
                         }
                     );
