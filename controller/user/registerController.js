@@ -1,5 +1,5 @@
 const config = require('../../library/database');
-let mysql = require('mysql');
+let mysql = require('mysql2');
 let pool = mysql.createPool(config);
 
 pool.on('error', (err) => {

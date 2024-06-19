@@ -1,7 +1,7 @@
 // Definisikan konfigurasi Database
 const config = require('../../library/database');
 // Gunakan library mysql
-let mysql = require('mysql');
+let mysql = require('mysql2');
 // Buat koneksi
 let pool = mysql.createPool(config);
 
