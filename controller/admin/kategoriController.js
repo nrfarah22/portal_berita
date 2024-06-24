@@ -1,11 +1,5 @@
-const mysql = require('mysql');
-const config = require('../../library/database');
+const pool = require('../../library/database');
 
-let pool = mysql.createPool(config);
-
-pool.on('error', (err) => {
-    console.error(err);
-});
 
 module.exports = {
     checkAndCreateTable() {

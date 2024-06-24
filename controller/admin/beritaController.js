@@ -1,7 +1,4 @@
-const config = require('../../library/database');
-
-let mysql      = require('mysql');
-let pool       = mysql.createPool(config);
+const pool = require('../../library/database');
 
 module.exports = {
     checkAndCreateTable() {
@@ -138,7 +135,7 @@ module.exports = {
                 return;
             }
     
-            connection.query('SELECT * FROM tbl_berita', (error, results) => {
+            connection.query("SELECT `tbl_berita`.`id_berita`, `tbl_berita`.`judul_berita`, `tbl_berita`.`author`, `tbl_kategori`.`nama_kategori`, `tbl_kategori`.`deskripsi` FROM `tbl_berita` LEFT JOIN `tbl_kategori` ON `tbl_berita`.`id_kategori` = `tbl_kategori`.`id_kategori`;", (error, results) => {
                 connection.release();
     
                 if (error) {
@@ -159,7 +156,7 @@ module.exports = {
                 return;
             }
     
-            connection.query('SELECT * FROM tbl_berita WHERE id_berita = ?', [id], (error, results) => {
+            connection.query('SELECT * FROM tbl_berita join tbl_kategori on `tbl_berita`.`id_kategori` = `tbl_kategori`.`id_kategori` where id_berita = ?', [id], (error, results) => {
                 connection.release();
     
                 if (error) {

@@ -1,7 +1,20 @@
-module.exports = {
+const mysql = require('mysql2');
+
+// Konfigurasi koneksi
+const config = {
   multipleStatements  : true,
-  host                : '127.0.0.1',
-  user                : 'root',
-  password            : '',
-  database            : 'portal_berita'
+  host                : 'educalab.id',
+  user                : '6McCwSlAAInN5L53',
+  password            : 'xxY7PtRkDxYoxKry',
+  database            : 'jnN4NZCqZJHralBa',
+  port                : '3307'
 };
+
+// Buat pool koneksi
+const pool = mysql.createPool(config);
+
+pool.on('error', (err) => {
+  console.error(err);
+});
+
+module.exports = pool;
