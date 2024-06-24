@@ -1,6 +1,6 @@
 const config = require('../../library/database');
 
-let mysql      = require('mysql');
+let mysql      = require('mysql2');
 let pool       = mysql.createPool(config);
 
 pool.on('error',(err)=> {
@@ -31,7 +31,7 @@ module.exports ={
                 }
     
                 res.render("user/profile",{
-                    url: 'http://localhost:3000/',
+                    url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
                     userName: req.session.username,
                     nama: results[0]['username'],
                     email: results[0]['email']

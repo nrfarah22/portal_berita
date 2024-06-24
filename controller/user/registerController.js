@@ -1,5 +1,5 @@
 const config = require('../../library/database');
-let mysql = require('mysql');
+let mysql = require('mysql2');
 let pool = mysql.createPool(config);
 
 pool.on('error', (err) => {
@@ -39,7 +39,7 @@ module.exports = {
     saveRegister(req, res) {
         if (req.method === 'GET') {
             res.render("user/register", {
-                url: 'http://localhost:3000/',
+                url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
             });
         } else if (req.method === 'POST') {
             let username = req.body.username;
