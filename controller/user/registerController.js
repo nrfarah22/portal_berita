@@ -1,5 +1,5 @@
 const config = require('../../library/database');
-let mysql = require('mysql2');
+let mysql = require('mysql');
 let pool = mysql.createPool(config);
 
 pool.on('error', (err) => {
@@ -36,48 +36,43 @@ module.exports = {
         });
     },
 
+    
     saveRegister(req, res) {
-        if (req.method === 'GET') {
-            res.render("user/register", {
-                url: 'https://api-msib-6-portal-berita-02.educalab.id/3307',
-            });
-        } else if (req.method === 'POST') {
-            let username = req.body.username;
-            let email = req.body.email;
-            let password = req.body.password;
-            
-            if (username && email && password) {
-                pool.getConnection(function(err, connection) {
-                    if (err) {
-                        res.status(500).send({ message: "Database connection error" });
-                        return;
-                    }
-                    connection.query(
-                        `INSERT INTO tbl_user (username, email, password) VALUES (?, ?, SHA2(?, 512));`,
-                        [username, email, password], 
-                        function (error, results) {
-                            connection.release();
-                            
-                            if (error) {
-                                res.status(500).send({ message: "Error inserting user data" });
-                                return;
-                            }
-                            res.status(201).send({
-                                message: 'Registrasi berhasil',
-                                data: {
-                                    id_user: results.insertId,
-                                    username: username,
-                                    email: email
-                                }
-                            });
+        let username = req.body.username;
+        let email = req.body.email;
+        let password = req.body.password;
+        
+        if (username && email && password) {
+            pool.getConnection(function(err, connection) {
+                if (err) {
+                    res.status(500).send({ message: "Database connection error" });
+                    return;
+                }
+                connection.query(
+                    `INSERT INTO tbl_user (username, email, password) VALUES (?, ?, SHA2(?, 512));`,
+                    [username, email, password], 
+                    function (error, results) {
+                        connection.release();
+                        
+                        if (error) {
+                            res.status(500).send({ message: "Error inserting user data" });
+                            return;
                         }
-                    );
-                });
-            } else {
-                res.status(400).send({ message: "Username, email, and password must be provided" });
-            }
+                        res.status(201).send({
+                            message: 'Registrasi berhasil',
+                            data: {
+                                id_user: results.insertId,
+                                username: username,
+                                email: email
+                            }
+                        });
+                    }
+                );
+            });
         } else {
-            res.status(405).send({ message: "Method not allowed" });
+            res.status(400).send({ message: "Username, email, and password must be provided" });
         }
-    }};
+    }
+    
+};
     
