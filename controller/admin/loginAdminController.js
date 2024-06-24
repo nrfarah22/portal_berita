@@ -9,53 +9,13 @@ pool.on('error',(err)=> {
 
 module.exports ={
     loginAdmin(req, res) {
-        if (req.method === 'GET') {
-            res.render("admin/loginadmin", {
-                url: 'http://localhost:3000/',
-            });
-        } else if (req.method === 'POST') {
-            let email = req.body.email;
-            let password = req.body.password;
-            if (email && password) {
-                pool.getConnection(function(err, connection) {
-                    if (err) {
-                        res.status(500).send({ message: "Database connection error" });
-                        return;
-                    }
-                    connection.query(
-                        `SELECT * FROM tbl_admin WHERE email = ? AND password = SHA2(?,512)`,
-                        [email, password], 
-                        function(error, results) {
-                            if (error) {
-                                res.status(500).send({ message: "Error querying database" });
-                                return;
-                            }
-                            if (results.length > 0) {
-                                req.session.loggedin = true;
-                                req.session.adminid = results[0].id_admin;
-                                req.session.username = results[0].username;
-                                res.redirect(301, '/dashboard');
-                                // res.status(200).send({ 
-                                //     message: "Login successful", 
-                                //     data: {
-                                //         adminid: req.session.adminid,
-                                //         username: req.session.username
-                                //     }
-                                // });
-                            } else {
-                                res.redirect(401, '/loginAdmin');
-                                //res.status(401).send({ message: "Akun tidak ditemukan" });
-                            }
-                        }
-                    );
-                    connection.release();
-                });
-            } else {
-                res.redirect(400, '/loginAdmin');
-                //res.status(400).send({ message: "Email dan password harus diisi" });
-            }
+        const { email, password } = req.body;
+    
+        // Periksa apakah email dan password cocok
+        if (email === 'nur123@gmail.com' && password === 'nur123') {
+            return res.status(200).json({ message: 'success' });
         } else {
-            res.redirect('/loginAdmin');
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
     },
     logout(req,res){

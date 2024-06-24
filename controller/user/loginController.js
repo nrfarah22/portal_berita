@@ -16,6 +16,7 @@ module.exports = {
         } else if (req.method === 'POST') {
             let email = req.body.email;
             let password = req.body.password;
+            
             if (email && password) {
                 pool.getConnection(function (err, connection) {
                     if (err) {
@@ -35,10 +36,9 @@ module.exports = {
                                 req.session.loggedin = true;
                                 req.session.userid = results[0].id_user;
                                 req.session.username = results[0].username;
-                                res.redirect(301, '../profile');
+                                res.status(200).send({ message: "Login successful", data: { userid: results[0].id_user, username: results[0].username } });
                             } else {
-                                res.redirect(401, '/login');
-                                //res.status(401).send({ message: "Akun tidak ditemukan" });
+                                res.status(401).send({ message: "Akun tidak ditemukan" });
                             }
                         }
                     );
@@ -47,9 +47,10 @@ module.exports = {
                 res.status(400).send({ message: "Email dan password harus diisi" });
             }
         } else {
-            res.redirect('/login');
+            res.status(405).send({ message: "Method not allowed" });
         }
     },
+    
 
     logout(req, res) {
         req.session.destroy((err) => {

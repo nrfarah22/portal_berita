@@ -39,45 +39,42 @@ module.exports = {
 
     addBerita(req, res) {
         pool.getConnection((err, connection) => {
-            if (err) {
-                res.status(500).send("Database connection error");
-                return;
-            }
-    
-            const { judul_berita, author, isi_berita, id_kategori } = req.body;
-    
-            // Pastikan semua field terisi
-            if (!judul_berita || !author || !isi_berita || !id_kategori) {
-                res.redirect(400, '/add');
-                // res.status(400).send("Judul berita, author, isi berita, dan id kategori harus diisi");
-                return;
-            }
-    
-            connection.query(
-                `INSERT INTO tbl_berita (judul_berita, author, isi_berita, id_kategori) VALUES (?, ?, ?, ?)`,
-                [judul_berita, author, isi_berita, id_kategori],
-                (error, results) => {
-                    connection.release();
-    
-                    if (error) {
-                        res.status(500).send("Error inserting data");
-                        return;
-                    }
-                    res.redirect(201, '/dashboard');
-                    //res.status(201).send({ message: "Berita created", data: { id_berita: results.insertId, judul_berita, author, isi_berita, id_kategori } });
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    res.status(500).send("Database connection error");
+                    return;
                 }
-            );
-        });
+        
+                const { judul_berita, author, isi_berita, id_kategori } = req.body;
+        
+                if (!judul_berita || !author || !isi_berita || !id_kategori) {
+                    res.status(400).send("Judul berita, author, isi berita, dan id kategori harus diisi");
+                    return;
+                }
+        
+                connection.query(
+                    'INSERT INTO tbl_berita (judul_berita, author, isi_berita, id_kategori) VALUES (?, ?, ?, ?)',
+                    [judul_berita, author, isi_berita, id_kategori],
+                    (error, results) => {
+                        connection.release();
+        
+                        if (error) {
+                            res.status(500).send("Error inserting data");
+                            return;
+                        }
+                        res.status(201).send({ message: "Berita created", data: { id_berita: results.insertId, judul_berita, author, isi_berita, id_kategori } });
+                    }
+                );
+            });
+        })
     },
 
     editBerita(req, res) {
         const id = req.params.id;
         const { judul_berita, author, isi_berita, id_kategori } = req.body;
     
-        if (!judul_berita || !author ||!isi_berita || !id_kategori) {
-            // res.status(400);
-            res.redirect(400, '/');
-            // res.status(400).send("Judul berita, isi berita, dan id kategori harus diisi");
+        if (!judul_berita || !author || !isi_berita || !id_kategori) {
+            res.status(400).send("Judul berita, author, isi berita, dan id kategori harus diisi");
             return;
         }
     
@@ -88,7 +85,7 @@ module.exports = {
             }
     
             connection.query(
-                `UPDATE tbl_berita SET judul_berita = ?, author = ?, isi_berita = ?, tanggal_diupdate = CURRENT_TIMESTAMP, id_kategori = ? WHERE id_berita = ?`,
+                'UPDATE tbl_berita SET judul_berita = ?, author = ?, isi_berita = ?, tanggal_diupdate = CURRENT_TIMESTAMP, id_kategori = ? WHERE id_berita = ?',
                 [judul_berita, author, isi_berita, id_kategori, id],
                 (error, results) => {
                     connection.release();
@@ -99,12 +96,10 @@ module.exports = {
                     }
     
                     if (results.affectedRows === 0) {
-                        res.redirect(404, '/');
-                        // res.status(404).send("Berita not found");
+                        res.status(404).send("Berita not found");
                         return;
                     }
-                    res.redirect(200, '/dashboard');
-                    //res.status(200).send({ message: "Berita updated", data: { id_berita: id, judul_berita, author, isi_berita, id_kategori } });
+                    res.status(200).send({ message: "Berita updated", data: { id_berita: id, judul_berita, author, isi_berita, id_kategori } });
                 }
             );
         });
@@ -131,16 +126,12 @@ module.exports = {
                     res.status(404).send("Berita not found");
                     return;
                 }
-                res.redirect(200, '/dashboard');
-                //res.status(200).send({ message: "Berita deleted", data: { id_berita: id } });
+                res.status(200).send({ message: "Berita deleted", data: { id_berita: id } });
             });
         });
     },
 
     readAllBerita(req, res) {
-        res.render("admin/dashboard", {
-            url: 'http://localhost:3000/',
-        });
         pool.getConnection((err, connection) => {
             if (err) {
                 res.status(500).send("Database connection error");
@@ -154,19 +145,12 @@ module.exports = {
                     res.status(500).send("Error retrieving data");
                     return;
                 }
-                res.status(200);
-                //res.status(200).json({ data: results });
-                
+                res.status(200).json({ data: results });
             });
         });
     },
 
-    
-
     readIdBerita(req, res) {
-        res.render("admin/edit", {
-            url: 'http://localhost:3000/',
-        });
         const id = req.params.id;
     
         pool.getConnection((err, connection) => {
@@ -184,13 +168,10 @@ module.exports = {
                 }
     
                 if (results.length === 0) {
-                    res.redirect(404, '/')
-                    //res.status(404).send("Berita not found");
+                    res.status(404).send("Berita not found");
                     return;
                 }
-                res.status(200);
-                // res.redirect(200, '/');
-                // res.status(200).json({ data: results[0] });
+                res.status(200).json({ data: results[0] });
             });
         });
     },

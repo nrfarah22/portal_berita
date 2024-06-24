@@ -12,9 +12,9 @@ beritaController.checkAndCreateTable();
 
 router.get('/', beritaController.readAllBerita);
 router.get('/:id', beritaController.readIdBerita);
-router.post('/', beritaController.addBerita);
-router.put('/:id', beritaController.editBerita);
-router.delete('/:id', beritaController.deleteBerita);
+router.post('/add', beritaController.addBerita);
+router.put('/edit/:id', beritaController.editBerita);
+router.delete('/delete/:id', beritaController.deleteBerita);
 
 
 

@@ -9,9 +9,13 @@ var flash = require('req-flash');
 
 var app = express();
 
-// view engine setup - using EJS
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../frontend/src/pages'));
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
+
+// // view engine setup - using EJS
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());

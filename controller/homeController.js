@@ -1,6 +1,6 @@
 module.exports ={
     home(req,res){
-        res.render("home",{
+        res.render("Home",{
             url: 'http://localhost:3000/',
         });
     }

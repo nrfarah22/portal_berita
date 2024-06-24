@@ -56,28 +56,28 @@ module.exports = {
                         `INSERT INTO tbl_user (username, email, password) VALUES (?, ?, SHA2(?, 512));`,
                         [username, email, password], 
                         function (error, results) {
+                            connection.release();
+                            
                             if (error) {
                                 res.status(500).send({ message: "Error inserting user data" });
                                 return;
                             }
-                            res.redirect(301, '/login');
-                            // res.status(201).send({
-                            //     message: 'Registrasi berhasil',
-                            //     data: {
-                            //         id_user: results.insertId,
-                            //         username: username,
-                            //         email: email
-                            //     }
-                            // });
+                            res.status(201).send({
+                                message: 'Registrasi berhasil',
+                                data: {
+                                    id_user: results.insertId,
+                                    username: username,
+                                    email: email
+                                }
+                            });
                         }
                     );
-                    connection.release();
                 });
             } else {
-                res.redirect(400, '/register');
-                res.end();
-                //res.status(400).send({ message: "Username, email, and password must be provided" });
+                res.status(400).send({ message: "Username, email, and password must be provided" });
             }
+        } else {
+            res.status(405).send({ message: "Method not allowed" });
         }
-    }
-};
+    }};
+    

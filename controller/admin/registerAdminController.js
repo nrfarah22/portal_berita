@@ -63,31 +63,27 @@ module.exports = {
                         `INSERT INTO tbl_admin (username, email, password) VALUES (?, ?, SHA2(?, 512));`,
                         [username, email, password], 
                         function (error, results) {
+                            connection.release();
+                            
                             if (error) {
                                 res.status(500).send({ message: "Error inserting user data" });
                                 return;
                             }
-                            res.redirect(301, '/loginAdmin');
                             // Jika tidak ada error, kirimkan response JSON
-                            // res.status(201).send({
-                            //     message: 'Registrasi berhasil',
-                            //     data: {
-                            //         id_admin: results.insertId,
-                            //         username: username,
-                            //         email: email
-                            //     }
-                            // });
+                            res.status(201).send({
+                                message: 'Registrasi berhasil',
+                                data: {
+                                    id_admin: results.insertId,
+                                    username: username,
+                                    email: email
+                                }
+                            });
                         }
                     );
-                    // Koneksi selesai
-                    connection.release();
                 });
             } else {
-                res.redirect(400, '/registerAdmin');
-                res.end();
-                //res.status(400).send({ message: "Username, email, and password must be provided" });
+                res.status(400).send({ message: "Username, email, and password must be provided" });
             }
         }
-    },
+    }};
     
-};
